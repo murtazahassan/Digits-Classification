@@ -13,21 +13,25 @@ Subscribe its FREE !!! 😂😂😂
 #DigitRecognition
 
 Affiliate Links:
+
 Recommend Webcam for Computer Vision:
 https://amzn.to/2MNtVKZ
+
 Budget Webcam:
 https://amzn.to/2ZP47Ug
 
 
 Links:
 Classify Traffic Signs: https://youtu.be/SWaYRyi0TTs
+
 How To Install OPENCV in Python:
 https://youtu.be/CJXIjApHYVs
-Computer Vision Course:
-https://www.youtube.com/watch?v=CJXIj...
+
 5 Must Know OpencCV Functions:
 https://youtu.be/7kHhz7nkpBw
+
 Easy Object Following Robot using Arduino and PixyCam:
 https://youtu.be/w_krOCBk1DE
+
 Robot Arm Arduino Tutorial | Gesture Controlled:
 https://youtu.be/gmz7eOB-tCg
