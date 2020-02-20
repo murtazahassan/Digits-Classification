@@ -12,6 +12,14 @@ Subscribe its FREE !!! 😂😂😂
 #Keras 
 #DigitRecognition
 
+ORIGINAL DATA SET is from Char74K -   http://www.ee.surrey.ac.uk/CVSSP/demos/chars74k/
+
+##################### DATA SET USED IN VIDEO ###################################
+https://drive.google.com/open?id=1cZr91zzHl93H1cbmIwx_7upfQPPMPi33
+######################################################################
+
+
+
 Affiliate Links:
 
 Recommend Webcam for Computer Vision:
