@@ -1,4 +1,4 @@
-# Digit Classification/Recognition using Convolutional Neural Networks
+# Digits Classification/Recognition using Convolutional Neural Networks
 
 [![Watch Video](https://github.com/murtazahassan/OCR_CNN/blob/master/OCR%20CNN.png)](https://youtu.be/y1ZrOs9s2QA)
 
