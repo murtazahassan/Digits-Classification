@@ -5,29 +5,27 @@ from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 from keras.preprocessing.image import ImageDataGenerator
 from keras.utils.np_utils import to_categorical
-
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.optimizers import Adam
 from keras.layers import Dropout,Flatten
 from keras.layers.convolutional import Conv2D,MaxPooling2D
-
 import pickle
-########################################
+
+################ PARAMETERS ########################
 path = 'myData'
-pathLabels = 'labels.csv'
 testRatio = 0.2
 valRatio = 0.2
 imageDimensions= (32,32,3)
-
 batchSizeVal= 50
-epochsVal = 2
+epochsVal = 10
 stepsPerEpochVal = 2000
+####################################################
 
-########################################
+#### IMPORTING DATA/IMAGES FROM FOLDERS 
 count = 0
-images = []
-classNo = []
+images = []     # LIST CONTAINING ALL THE IMAGES 
+classNo = []    # LIST CONTAINING ALL THE CORRESPONDING CLASS ID OF IMAGES 
 myList = os.listdir(path)
 print("Total Classes Detected:",len(myList))
 noOfClasses = len(myList)
@@ -44,17 +42,19 @@ print(" ")
 print("Total Images in Images List = ",len(images))
 print("Total IDS in classNo List= ",len(classNo))
 
+#### CONVERT TO NUMPY ARRAY 
 images = np.array(images)
 classNo = np.array(classNo)
 print(images.shape)
 
-#### Spliting the data
+#### SPLITTING THE DATA
 X_train,X_test,y_train,y_test = train_test_split(images,classNo,test_size=testRatio)
 X_train,X_validation,y_train,y_validation = train_test_split(X_train,y_train,test_size=valRatio)
 print(X_train.shape)
 print(X_test.shape)
 print(X_validation.shape)
 
+#### PLOT BAR CHART FOR DISTRIBUTION OF IMAGES
 numOfSamples= []
 for x in range(0,noOfClasses):
     #print(len(np.where(y_train==x)[0]))
@@ -68,12 +68,12 @@ plt.xlabel("Class ID")
 plt.ylabel("Number of Images")
 plt.show()
 
+#### PREPOSSESSING FUNCTION FOR IMAGES FOR TRAINING 
 def preProcessing(img):
     img = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
     img = cv2.equalizeHist(img)
     img = img/255
     return img
-
 # img = preProcessing(X_train[30])
 # img = cv2.resize(img,(300,300))
 # cv2.imshow("PreProcesssed",img)
@@ -84,11 +84,12 @@ X_test= np.array(list(map(preProcessing,X_test)))
 X_validation= np.array(list(map(preProcessing,X_validation)))
 
 
+#### RESHAPE IMAGES 
 X_train = X_train.reshape(X_train.shape[0],X_train.shape[1],X_train.shape[2],1)
 X_test = X_test.reshape(X_test.shape[0],X_test.shape[1],X_test.shape[2],1)
 X_validation = X_validation.reshape(X_validation.shape[0],X_validation.shape[1],X_validation.shape[2],1)
 
-
+#### IMAGE AUGMENTATION 
 dataGen = ImageDataGenerator(width_shift_range=0.1,
                              height_shift_range=0.1,
                              zoom_range=0.2,
@@ -96,10 +97,12 @@ dataGen = ImageDataGenerator(width_shift_range=0.1,
                              rotation_range=10)
 dataGen.fit(X_train)
 
+#### ONE HOT ENCODING OF MATRICES
 y_train = to_categorical(y_train,noOfClasses)
 y_test = to_categorical(y_test,noOfClasses)
 y_validation = to_categorical(y_validation,noOfClasses)
 
+#### CREATING THE MODEL 
 def myModel():
     noOfFilters = 60
     sizeOfFilter1 = (5,5)
@@ -128,8 +131,7 @@ def myModel():
 model = myModel()
 print(model.summary())
 
-
-
+#### STARTING THE TRAINING PROCESS
 history = model.fit_generator(dataGen.flow(X_train,y_train,
                                  batch_size=batchSizeVal),
                                  steps_per_epoch=stepsPerEpochVal,
@@ -137,7 +139,7 @@ history = model.fit_generator(dataGen.flow(X_train,y_train,
                                  validation_data=(X_validation,y_validation),
                                  shuffle=1)
 
-
+#### PLOT THE RESULTS  
 plt.figure(1)
 plt.plot(history.history['loss'])
 plt.plot(history.history['val_loss'])
@@ -151,12 +153,13 @@ plt.legend(['training','validation'])
 plt.title('Accuracy')
 plt.xlabel('epoch')
 plt.show()
+
+#### EVALUATE USING TEST IMAGES
 score = model.evaluate(X_test,y_test,verbose=0)
 print('Test Score = ',score[0])
 print('Test Accuracy =', score[1])
 
-
+#### SAVE THE TRAINED MODEL 
 pickle_out= open("model_trained.p", "wb")
 pickle.dump(model,pickle_out)
 pickle_out.close()
-
